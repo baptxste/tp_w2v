@@ -47,16 +47,19 @@ class Dataloader:
         mots = self.text.split(" ")
         for i in range(self.L, len(mots)-self.L) : 
             if mots[i] in cpos.keys():
-                ctx = mots[i]
                 for j in range(i-self.L, i+self.L):
+                    if i==j:
+                         continue
                     if mots[j] in ctx.keys():
                             ctx[mots[j]]+=1
                     else : ctx[mots[j]]=1
             else :
                 ctx = dict()
                 for j in range(i-self.L, i+self.L):
+                    if i==j:
+                         continue
                     ctx[mots[j]]=1
-                cpos[mots[j]] = ctx
+                cpos[mots[i]] = ctx
         return cpos
     
     def cneg(self):
