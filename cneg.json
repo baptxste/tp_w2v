@@ -1,282 +1,282 @@
 {
     "dix": [
         [
-            "y",
             "lundi",
-            "obscuritéhuiait",
-            "août"
+            "lundi",
+            "1572",
+            "fête"
         ],
         [
-            "dix",
-            "août",
-            "obscuritéhuiait",
-            "jour"
-        ],
-        [
-            "du",
+            "huitième",
             "Le",
-            "au",
-            "au"
+            "huitième",
+            "huitième"
+        ],
+        [
+            "d",
+            "mois",
+            "Louvre",
+            "jour"
         ]
     ],
     "huitième": [
         [
-            "août",
-            "au",
-            "Le",
-            "il"
-        ],
-        [
             "jour",
-            "Louvre",
-            "lundi",
-            "Louvre"
+            "au",
+            "au",
+            "fête"
         ],
         [
-            "au",
-            "huitième",
             "avl",
-            "1572"
+            "huitième",
+            "jour",
+            "huitième"
+        ],
+        [
+            "grande",
+            "d",
+            "Louvre",
+            "avl"
         ]
     ],
     "jour": [
         [
-            "fête",
-            "huitième",
-            "il",
-            "huitième"
-        ],
-        [
-            "Louvre",
-            "mois",
-            "y",
-            "mois"
-        ],
-        [
-            "lundi",
-            "obscuritéhuiait",
             "grande",
-            "Le"
+            "mois",
+            "fête",
+            "lundi"
+        ],
+        [
+            "obscuritéhuiait",
+            "Le",
+            "grande",
+            "au"
+        ],
+        [
+            "il",
+            "au",
+            "il",
+            "mois"
         ]
     ],
     "du": [
         [
-            "1572",
+            "lundi",
             "d",
-            "au",
-            "jour"
+            "il",
+            "obscuritéhuiait"
         ],
         [
-            "1572",
-            "il",
             "y",
-            "grande"
+            "obscuritéhuiait",
+            "1572",
+            "Le"
         ],
         [
-            "obscuritéhuiait",
-            "il",
-            "dix",
-            "du"
+            "avl",
+            "jour",
+            "Louvre",
+            "avl"
         ]
     ],
     "mois": [
         [
-            "mois",
-            "Louvre",
             "il",
-            "du"
-        ],
-        [
-            "Le",
-            "1572",
-            "du",
-            "du"
-        ],
-        [
+            "jour",
             "mois",
-            "1572",
-            "Louvre",
+            "jour"
+        ],
+        [
+            "grande",
+            "au",
+            "avl",
             "dix"
+        ],
+        [
+            "du",
+            "y",
+            "du",
+            "lundi"
         ]
     ],
     "d": [
         [
-            "dix",
-            "du",
+            "août",
             "Louvre",
+            "obscuritéhuiait",
+            "obscuritéhuiait"
+        ],
+        [
+            "au",
+            "huitième",
+            "1572",
             "huitième"
         ],
         [
-            "août",
-            "Le",
-            "1572",
-            "mois"
-        ],
-        [
-            "avl",
-            "huitième",
+            "mois",
             "au",
-            "du"
+            "1572",
+            "fête"
         ]
     ],
     "août": [
         [
-            "d",
-            "il",
-            "Louvre",
-            "au"
-        ],
-        [
-            "d",
-            "Louvre",
-            "dix",
-            "jour"
-        ],
-        [
-            "août",
             "1572",
-            "Louvre",
-            "1572"
+            "il",
+            "lundi",
+            "dix"
+        ],
+        [
+            "huitième",
+            "du",
+            "au",
+            "Louvre"
+        ],
+        [
+            "obscuritéhuiait",
+            "1572",
+            "grande",
+            "grande"
         ]
     ],
     "1572": [
         [
-            "mois",
-            "d",
-            "obscuritéhuiait",
-            "lundi"
+            "y",
+            "dix",
+            "y",
+            "huitième"
         ],
         [
             "Le",
-            "obscuritéhuiait",
-            "Le",
-            "1572"
-        ],
-        [
-            "fête",
-            "d",
             "août",
-            "Louvre"
+            "fête",
+            "août"
+        ],
+        [
+            "au",
+            "il",
+            "fête",
+            "lundi"
         ]
     ],
     "il": [
         [
-            "y",
-            "du",
-            "août",
-            "obscuritéhuiait"
-        ],
-        [
-            "jour",
-            "obscuritéhuiait",
-            "d",
-            "avl"
-        ],
-        [
+            "grande",
+            "au",
             "Louvre",
-            "dix",
-            "huitième",
-            "fête"
+            "dix"
+        ],
+        [
+            "fête",
+            "fête",
+            "août",
+            "y"
+        ],
+        [
+            "au",
+            "mois",
+            "du",
+            "dix"
         ]
     ],
     "y": [
         [
             "huitième",
-            "1572",
-            "il",
-            "août"
+            "lundi",
+            "fête",
+            "huitième"
+        ],
+        [
+            "août",
+            "huitième",
+            "y",
+            "fête"
         ],
         [
             "jour",
-            "fête",
-            "mois",
-            "1572"
-        ],
-        [
-            "au",
-            "y",
-            "y",
-            "huitième"
+            "jour",
+            "jour",
+            "y"
         ]
     ],
     "avl": [
         [
-            "d",
             "août",
-            "obscuritéhuiait",
-            "y"
+            "Le",
+            "Le",
+            "dix"
         ],
         [
             "mois",
+            "jour",
             "huitième",
-            "avl",
-            "fête"
+            "il"
         ],
         [
-            "dix",
-            "mois",
             "août",
-            "1572"
+            "y",
+            "Louvre",
+            "huitième"
         ]
     ],
     "obscuritéhuiait": [
         [
-            "Le",
-            "avl",
-            "Le",
-            "huitième"
+            "du",
+            "huitième",
+            "1572",
+            "Louvre"
         ],
         [
-            "obscuritéhuiait",
-            "d",
-            "fête",
-            "au"
+            "1572",
+            "lundi",
+            "grande",
+            "août"
         ],
         [
-            "dix",
-            "au",
-            "au",
-            "il"
+            "lundi",
+            "Le",
+            "Louvre",
+            "1572"
         ]
     ],
     "grande": [
         [
-            "avl",
-            "y",
-            "fête",
-            "il"
-        ],
-        [
-            "au",
-            "d",
-            "août",
-            "il"
-        ],
-        [
-            "y",
             "1572",
+            "obscuritéhuiait",
+            "du",
+            "dix"
+        ],
+        [
+            "jour",
+            "grande",
+            "août",
+            "avl"
+        ],
+        [
             "au",
-            "d"
+            "fête",
+            "Le",
+            "jour"
         ]
     ],
     "fête": [
         [
-            "huitième",
-            "d",
-            "août",
-            "obscuritéhuiait"
+            "au",
+            "dix",
+            "y",
+            "1572"
         ],
         [
-            "lundi",
+            "dix",
+            "avl",
+            "août",
+            "d"
+        ],
+        [
+            "y",
             "mois",
             "y",
-            "mois"
-        ],
-        [
-            "mois",
-            "obscuritéhuiait",
-            "Le",
-            "avl"
+            "obscuritéhuiait"
         ]
     ]
 }
