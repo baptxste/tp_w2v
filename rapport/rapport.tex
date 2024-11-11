@@ -1,0 +1,96 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath}
+\usepackage{mathtools}
+\usepackage{enumerate}  
+
+\setlength{\parindent}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{8.8in}
+\setlength{\topmargin}{0in}
+\setlength{\headheight}{18pt}
+
+
+
+\title{Modèle de Langage, Plongement statistiques}
+\author{Leader : Chachura Baptiste, Follower : Bouger Lisa}
+
+\begin{document}
+\maketitle
+
+\vspace{0.5in}
+
+
+\section{Introducion}
+
+Le but de ce projet est d'étudier différents modèles de plongements statistiques 
+sur des problèmes de traitement du langage. Nous nous pencherons sur une architecture
+bag of words (BOW) et mettrons en place différentes méthodes d'évaluations de nos modèles.
+
+\section{Modèle Initial}
+\subsection{Description du modèle}
+Le but de ce modèle est d'apprendre des plongements statistiques sur un corpus de texte donnée.
+
+\subsubsection{Apprentissage}
+Une fenêtre de taille fixée parcours l'ensemble du corpus, nous attribuons le contexte (contenu de cette fenêtre)
+au mot central de la fenêtre, ce contexte est appelé contexte positif. Pour chaque contexte positif
+créé nous générons k contextes négatifs. Dans ce premier modèle la création de ces contexte négatifs se fait 
+grâce à un tirage aléatoire sur l'ensemble du vocabulaire. Pour l'apprentissage nous créons deux matrices : une 
+pour stocker les plongements de nos mots ainsi qu'une matrice qui représente nos contextes. Nous créons ensuite un classifieur 
+binaire qui a pour but de nous prédire si un mot c appartient au contexte d'un mot m. on note : 
+\[
+    P(+|m, c_{\text{pos}}) = \sigma( m.c) = \frac{1}{1+e^{-m.c}}
+\]
+où sigma est la fonction sigmoïde.
+
+\subsubsection{Fonction de perte}
+Pour chaque mini-batch de l’ensemble d’apprentissage, on souhaite maximiser la probabilité de l’exemple positif : 
+$P(+|m, c_{\text{pos}})$ et minimiser la probabilité des exemples négatifs : $P(+|m, c_{\text{neg}_i})$. Cela revient à maximiser l’expression suivante :
+\[
+P(+|m, c_{\text{pos}}) \prod_{i=1}^{k} P(-|m, c_{\text{neg}_i})
+\]
+Pour simplifier les calcules nous chercherons à minimiser la fonction de perte suivante : 
+\[
+L = - \log \left[ P(+|m, c_{\text{pos}}) \prod_{i=1}^{k} P(-|m, c_{\text{neg}_i}) \right]
+\]
+
+
+\subsubsection{Evaluation}
+L'évaluation de ce modèle se fait sur un fichier test de la forme :
+\begin{center}
+vélo bicyclette chat\\
+mangue goyave balais\\
+...\\
+\end{center}
+Nous effectuons une mesure de similarité entre les mots de chaque ligne et souhaitons obtenir
+une similarité plus importante entre les mots 1 et 2 que entre les mots 3 et 4. Pour effectuer cette mesure de 
+similarité nous utilisons la similarité cosinus :
+\[
+\text{sim\_cos}(\mathbf{m}_1, \mathbf{m}_2) = \frac{\mathbf{m}_1 \cdot \mathbf{m}_2}{\|\mathbf{m}_1\| \|\mathbf{m}_2\|}
+\]
+
+
+
+\section{Second Modèle}
+
+Cette fois ci les exemples négatifs ne seront plus générer de manière aléatoire mais nous effecturons 
+un tirage où la probabilité de tirer un mot correspond à sa fréquence dans le corpus d'entrainement.
+Cette méthode de génération des exemples permet d'éviter une sur représentation des mots rares de notre 
+corpus dans les contextes négatifs.
+
+\section{Opérations sur les plongements} 
+
+Le but de cette partie est d'étudier dans quelle mesure est-il possible d'utiliser les vecteurs
+de plongement afin d'effectuer des opérations sémantiques. Un exemple classique de ce genre d'opérations est
+'Père' - 'Homme' + 'Femme' = 'Mère'. Pour évaluer cette capacité nous créons un jeu de données contenant une 
+centaine d'opérations similaraire sur ces mots. \\
+Pour l'évaluation nous utilisons le modèle 43 ( hébergé à http://vectors.nlpl.eu/repository), il contient 
+plus de 2,5 millions de mots et des plogements de dimension 100.  
+
+
+\section{Conclusion}
+
+\end{document}

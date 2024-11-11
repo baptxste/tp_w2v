@@ -19,7 +19,7 @@ class Dataloader:
     #     self.dataset_creation()
     #     self.save_to_json()
     #     print(" Fin initialisation Dataloader")
-    def __init__(self, listpath=None, L=None, k=None, from_files=False):
+    def __init__(self, listpath=None, L=None, k=None, from_files=False, nb_occ=None):
         """
         listpath : liste de chemins vers les fichiers texte
         L : taille de la fenêtre de contexte
@@ -29,7 +29,7 @@ class Dataloader:
         if from_files:
             # Initialisation à partir des fichiers sauvegardés
             print("Chargement des données à partir des fichiers...")
-            self.load_from_files()
+            self.load_from_files(nb_occ)
             print("Données chargées avec succès.")
         else:
             # Initialisation complète
@@ -39,7 +39,7 @@ class Dataloader:
             print("Nettoyage du texte ...")
             self.extract_clean_text()
             print("Création du vocabulaire ...")
-            self.create_lexicon()
+            self.create_lexicon(nb_occ)
             print("Génération des exemples positifs et négatifs ...")
             self.cpos_cneg()
             print("Création du dataset ...")
@@ -61,19 +61,26 @@ class Dataloader:
                 words = re.findall(r'\b\w+\b', self.text)
                 self.text = " ".join(words)
 
-    def create_lexicon(self):
+    def create_lexicon(self, nb_occ):
             """ 
-            -> text
-            -> renvoie {mot1 : occurence, mot2 ...}
+
             """
-            self.text = self.text.lower()
-            words = re.findall(r'\b\w+\b', self.text) # inutile ? deja fait dans l'extract ?
+            text_tmp = self.text.lower()
+            words = re.findall(r'\b\w+\b', text_tmp) # inutile ? deja fait dans l'extract ?
             word_count = Counter(words)
             self.lexicon = dict(word_count)
-            self.indexer = sorted(list(self.lexicon.keys()))
-  
+            self.minlexicon = dict()
+            for key in self.lexicon.keys():
+                if self.lexicon[key] >= nb_occ : 
+                    self.minlexicon[key] = self.lexicon[key]
+            self.indexer = sorted(list(self.minlexicon.keys()))
+            ll = [e for e in words if e in self.indexer ]
+            self.text = ' '.join(ll)
+
+
+
     def tirer_mot_aleatoire(self):
-        return random.choice([keys for keys in self.lexicon.keys()])
+        return random.choice([keys for keys in self.minlexicon.keys()])
 
     def cpos_cneg(self):
         """
@@ -119,6 +126,9 @@ class Dataloader:
                     self.intcneg[self.indexer.index(mots[i])].append(intctx)
 
     def dataset_creation(self):
+        """
+        [(index du mot, liste positifs, liste negatifs),( . , . , . ),...]
+        """
         self.dataset = []
         for e in self.indexer:
             try : 
@@ -140,7 +150,8 @@ class Dataloader:
         with open("data/lexicon.json", "w", encoding="utf8") as lexicon:
             json.dump(self.lexicon, lexicon, ensure_ascii=False, indent=4)
 
-    def load_from_files(self):
+    def load_from_files(self, nb_occ):
+        print( "Attention la valeur d'occurence minimale doit être la même que lors de l'entraînement ")
         """ Charge les données à partir des fichiers JSON """
         with open("data/cpos.json", "r", encoding="utf-8") as cpos:
             self.cpos = json.load(cpos)
@@ -157,5 +168,9 @@ class Dataloader:
     
         with open("data/lexicon.json", "r", encoding="utf8") as lexicon:
             self.lexicon = json.load(lexicon)
-            self.indexer = sorted(list(self.lexicon.keys()))
+            self.minlexicon = dict()
+            for key in self.lexicon.keys():
+                if self.lexicon[key] >= nb_occ : 
+                    self.minlexicon[key] = self.lexicon[key]
+            self.indexer = sorted(list(self.minlexicon.keys()))
         self.dataset_creation()

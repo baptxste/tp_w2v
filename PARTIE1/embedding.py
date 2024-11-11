@@ -39,8 +39,6 @@ class Embedding:
         return loss
 
     def generate(self, dataset, lr, it):
-
-
         """
         dataset : ensemble d'exemples (mot cible, contexte positif, contextes négatifs)
         lr : taux d'apprentissage
@@ -67,6 +65,11 @@ class Embedding:
         plt.ylabel("loss")
         plt.show()
 
-    def save_param(self):
+    def save_param(self, indexer):
         np.save('data/matriceM.npy', self.M)  # Binaire efficace pour les grosses matrices
         np.savetxt('data/matriceM.csv', self.M, delimiter=',')  # fichier lisible mais plus lent
+
+        with open("data/embedding.txt","w") as l : 
+            l.write(f"nombre de mots, taille de l'embedding : {self.M.shape}\n")
+            for i in range(self.M.shape[0]):
+                l.write(f"{indexer[i], self.M[i]}\n")
