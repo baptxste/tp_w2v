@@ -71,8 +71,14 @@ similarité nous utilisons la similarité cosinus :
 \[
 \text{sim\_cos}(\mathbf{m}_1, \mathbf{m}_2) = \frac{\mathbf{m}_1 \cdot \mathbf{m}_2}{\|\mathbf{m}_1\| \|\mathbf{m}_2\|}
 \]
-
-
+\subsubsection{Résultats}
+Dans cette partie nous allons comparer les résultats de 240 expériences durant lesquelles nous étudions l'impact de divers paramètres du modèle.
+Dans un premier temps nous fixons la taille des plogements à 100 ainsi que le taux d'apprentissage à 0.1. 
+Nous faisons varier les autres paramètres dans les intervales suivants : \\
+- [5, 7, 10, 20] Pour le nombre d'itération \\
+- [1, 2, 3, 5, 7] pour la taille de la demi fenêtre du contexte \\
+- [1, 3, 5, 10] pour le nombre d'exemples négatifs pour un exemple positif \\
+- [1, 5, 10] pour filtrer les mots rares \\
 
 \section{Second Modèle}
 

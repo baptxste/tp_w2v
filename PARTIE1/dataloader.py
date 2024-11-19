@@ -1,38 +1,17 @@
 import re
-from collections import Counter
-import random
+from collections import Counter, defaultdict
 import json
 from tqdm import tqdm
+import random
 
 class Dataloader:
-    # def __init__(self, listpath, L, k) :
-    #     self.listpath = listpath # ['path1', 'path2',...]
-    #     self.L = L
-    #     self.k = k
-    #     print("Nettoyage du texte ...")
-    #     self.extract_clean_text()
-    #     print(("Création du vocabulaire ..."))
-    #     self.create_lexicon()
-    #     print("génération des exemples positifs et négatifs ...")
-    #     self.cpos_cneg()
-    #     print("création du dataset ...")
-    #     self.dataset_creation()
-    #     self.save_to_json()
-    #     print(" Fin initialisation Dataloader")
+    
     def __init__(self, listpath=None, L=None, k=None, from_files=False, nb_occ=None):
-        """
-        listpath : liste de chemins vers les fichiers texte
-        L : taille de la fenêtre de contexte
-        k : nombre de contextes négatifs pour un contexte positif
-        from_files : booléen pour indiquer si l'initialisation se fait à partir des fichiers sauvegardés
-        """
         if from_files:
-            # Initialisation à partir des fichiers sauvegardés
             print("Chargement des données à partir des fichiers...")
             self.load_from_files(nb_occ)
             print("Données chargées avec succès.")
         else:
-            # Initialisation complète
             self.listpath = listpath
             self.L = L
             self.k = k
@@ -48,82 +27,67 @@ class Dataloader:
             print("Fin de l'initialisation du Dataloader")
 
     def extract_clean_text(self):
-        """
-        -> path du fichier
-        -> renvoie le text
-        """
         self.text = ""
-        for path in self.listpath : 
-            file = open(path)
-            print(f"Fichier : {self.listpath.index(path)+1} / {len(self.listpath)}")
-            for line in tqdm(file.readlines()):
-                self.text += line.strip()
-                words = re.findall(r'\b\w+\b', self.text)
-                self.text = " ".join(words)
+        text_parts = []
+        word_pattern = re.compile(r'\b\w+\b')  # Compile une seule fois
+
+        for i, path in enumerate(self.listpath):
+            print(f"Fichier : {i + 1} / {len(self.listpath)}")
+            with open(path) as file:
+                for line in tqdm(file):
+                    cleaned_line = " ".join(word_pattern.findall(line.strip()))
+                    text_parts.append(cleaned_line)
+        
+        self.text = " ".join(text_parts)
 
     def create_lexicon(self, nb_occ):
-            """ 
+        word_count = Counter(self.text.lower().split()) 
+        self.lexicon = dict(word_count)
+        self.minlexicon = {key: count for key, count in self.lexicon.items() if count >= nb_occ}
+        self.indexer = sorted(self.minlexicon.keys())
+        self.text = ' '.join([word for word in self.text.split() if word in self.indexer])
+    
+    # def tirer_mot_aleatoire(self):
+    #     if not hasattr(self, 'minlexicon_keys'):
+    #         self.minlexicon_keys = list(self.minlexicon.keys())
+    #     return random.choice(self.minlexicon_keys)
+    
+    def tirer_mot_aleatoire(self): # tiens compte de la fréquence des mots
+        if not hasattr(self, 'lexiconproba'):
+            self.lexiconproba = []
+            for key in self.minlexicon.keys() :
+                for i in range( self.minlexicon[key]):
+                    self.lexiconproba.append(key)
+        return random.choice(self.lexiconproba)
 
-            """
-            text_tmp = self.text.lower()
-            words = re.findall(r'\b\w+\b', text_tmp) # inutile ? deja fait dans l'extract ?
-            word_count = Counter(words)
-            self.lexicon = dict(word_count)
-            self.minlexicon = dict()
-            for key in self.lexicon.keys():
-                if self.lexicon[key] >= nb_occ : 
-                    self.minlexicon[key] = self.lexicon[key]
-            self.indexer = sorted(list(self.minlexicon.keys()))
-            ll = [e for e in words if e in self.indexer ]
-            self.text = ' '.join(ll)
-
-
-
-    def tirer_mot_aleatoire(self):
-        return random.choice([keys for keys in self.minlexicon.keys()])
 
     def cpos_cneg(self):
-        """
-        --> text
-        --> dict[cpos] {mot1 : [[ctx1], [ctx2]...], mot2 : ...}
-        --> dict[cneg] {mot1 : [[ctx_faux1], [ctx_faux2]...], mot2 : ...} avec k fois plus de contexte par mot
-        --> dict[intcpos] {index(mot1):[[index(ctx1), ...], [], ...]}
-        """
-        self.cpos = dict()
-        self.cneg = dict()
-        self.intcpos = dict()
-        self.intcneg = dict()
+        self.cpos = defaultdict(list)
+        self.cneg = defaultdict(list)
+        self.intcpos = defaultdict(list)
+        self.intcneg = defaultdict(list)
 
         mots = self.text.split(" ")
-        for i in tqdm(range(self.L, len(mots)-self.L+1)): 
-            if mots[i] in self.cpos.keys():
-                ctx = mots[i-self.L:i]
-                ctx+=(mots[i+1 : i+self.L+1])
-                intctx = [self.indexer.index(e) for e in ctx]
-                self.cpos[mots[i]].append(ctx)
-                self.intcpos[self.indexer.index(mots[i])].append(intctx)
-                for j in range(self.k):
-                    ctx = [self.tirer_mot_aleatoire() for i in range(2*(self.L))]
-                    intctx = [self.indexer.index(e) for e in ctx]
-                    self.cneg[mots[i]].append(ctx)
-                    self.intcneg[self.indexer.index(mots[i])].append(intctx)
+        index_cache = {word: i for i, word in enumerate(self.indexer)}  # Cache des index pour éviter les recherches répétées
 
-            else : 
-                self.cpos[mots[i]] = []
-                self.intcpos[self.indexer.index(mots[i])] = []
-                ctx = mots[i-self.L:i]
-                ctx+=(mots[i+1 : i+self.L+1])
-                intctx = [self.indexer.index(e) for e in ctx]
-                self.cpos[mots[i]].append(ctx)
-                self.intcpos[self.indexer.index(mots[i])].append(intctx)
+        for i in tqdm(range(self.L, len(mots) - self.L)):
+            mot = mots[i]
+            mot_index = index_cache.get(mot)
 
-                self.cneg[mots[i]] = []
-                self.intcneg[self.indexer.index(mots[i])] = []
-                for j in range(self.k):
-                    ctx = [self.tirer_mot_aleatoire() for i in range(2*(self.L))]
-                    self.cneg[mots[i]].append(ctx)
-                    intctx = [self.indexer.index(e) for e in ctx]
-                    self.intcneg[self.indexer.index(mots[i])].append(intctx)
+            if mot_index is not None:
+                # Contexte positif
+                ctx = mots[i - self.L : i] + mots[i + 1 : i + self.L + 1]
+                intctx = [index_cache.get(e) for e in ctx]
+                self.cpos[mot].append(ctx)
+                self.intcpos[mot_index].append(intctx)
+
+                # Contexte négatif
+                for _ in range(self.k):
+                    neg_ctx = [self.tirer_mot_aleatoire() for _ in range(2 * self.L)]
+                    int_neg_ctx = [index_cache.get(e) for e in neg_ctx]
+                    self.cneg[mot].append(neg_ctx)
+                    self.intcneg[mot_index].append(int_neg_ctx)
+
 
     def dataset_creation(self):
         """

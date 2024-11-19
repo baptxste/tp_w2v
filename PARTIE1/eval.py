@@ -30,4 +30,6 @@ def test_file( path_file, M, indexer):
 
                 if sim1>sim2 : 
                     ok+=1
-    print(f"Résultat du test : {ok*100/nb_line}%")
+    result = ok*100/nb_line
+    print(f"Résultat du test : {result}%")
+    return result
