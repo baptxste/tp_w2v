@@ -48,17 +48,44 @@ class Dataloader:
         self.text = ' '.join([word for word in self.text.split() if word in self.indexer])
     
     # def tirer_mot_aleatoire(self):
+    #     """
+    #     tirage random
+    #     """
     #     if not hasattr(self, 'minlexicon_keys'):
     #         self.minlexicon_keys = list(self.minlexicon.keys())
     #     return random.choice(self.minlexicon_keys)
     
-    def tirer_mot_aleatoire(self): # tiens compte de la fréquence des mots
-        if not hasattr(self, 'lexiconproba'):
-            self.lexiconproba = []
-            for key in self.minlexicon.keys() :
-                for i in range( self.minlexicon[key]):
-                    self.lexiconproba.append(key)
-        return random.choice(self.lexiconproba)
+
+    def tirer_mot_aleatoire(self):
+        """
+        tirage selon la fréquence
+        """
+        if not hasattr(self, 'minlexicon_keys'):
+            self.minlexicon_keys = list(self.minlexicon.keys())
+        if not hasattr(self, 'minlexicon_weights'):
+
+            self.minlexicon_keys = list(self.minlexicon.keys())
+            total_count = sum(self.minlexicon.values())
+            self.minlexicon_weights = [self.minlexicon[word] / total_count for word in self.minlexicon_keys]
+        
+
+        return random.choices(self.minlexicon_keys, weights=self.minlexicon_weights, k=1)[0]
+    
+    # def tirer_mot_aleatoire(self):
+    #     """
+    #     tirage avec la fréquence pondéré en fonction de alpha
+    #     """
+    #     if not hasattr(self, 'minlexicon_keys'):
+    #         self.minlexicon_keys = list(self.minlexicon.keys())
+    #     alpha = 0.75
+    #     if not hasattr(self, 'minlexicon_weights_alpha'):
+
+    #         self.minlexicon_keys = list(self.minlexicon.keys())
+    #         total_count = sum(self.minlexicon.values())
+    #         self.minlexicon_weights = [self.minlexicon[word]**alpha / total_count**alpha for word in self.minlexicon_keys]
+
+    #     return random.choices(self.minlexicon_keys, weights=self.minlexicon_weights, k=1)[0]
+
 
 
     def cpos_cneg(self):

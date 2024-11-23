@@ -4,7 +4,8 @@
 \usepackage{url}
 \usepackage{latexsym,amsfonts,amssymb,amsthm,amsmath}
 \usepackage{mathtools}
-\usepackage{enumerate}  
+\usepackage{enumerate} 
+\usepackage{tabularx} 
 
 \setlength{\parindent}{0in}
 \setlength{\oddsidemargin}{0in}
@@ -72,13 +73,48 @@ similarité nous utilisons la similarité cosinus :
 \text{sim\_cos}(\mathbf{m}_1, \mathbf{m}_2) = \frac{\mathbf{m}_1 \cdot \mathbf{m}_2}{\|\mathbf{m}_1\| \|\mathbf{m}_2\|}
 \]
 \subsubsection{Résultats}
-Dans cette partie nous allons comparer les résultats de 240 expériences durant lesquelles nous étudions l'impact de divers paramètres du modèle.
-Dans un premier temps nous fixons la taille des plogements à 100 ainsi que le taux d'apprentissage à 0.1. 
-Nous faisons varier les autres paramètres dans les intervales suivants : \\
-- [5, 7, 10, 20] Pour le nombre d'itération \\
-- [1, 2, 3, 5, 7] pour la taille de la demi fenêtre du contexte \\
-- [1, 3, 5, 10] pour le nombre d'exemples négatifs pour un exemple positif \\
-- [1, 5, 10] pour filtrer les mots rares \\
+Dans cette section nous allons étudier l'influence des différents paramètres sur notre modèle. 
+Chaque expérience est répétée 10 fois. 
+Dans un premier temps nous nous intéressons à un modèle où les mots choisis pour générer les exemples négatifs
+sont tirés de manière totalement alèatoire.
+\newline
+\newline
+\begin{tabularx}{\textwidth}{|X|X|X|}
+    \hline
+    Paramètres & Moyennes & Ecarts types \\ 
+    \hline
+    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=10$, $occ_min=5$  & 52.1  & 3.98  \\ 
+    \hline
+    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=4$, $occ_min=5$  & 46.6  & 3.92  \\ 
+    \hline
+    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=15$, $occ_min=5$  & 54.1  & 3.26  \\ 
+    \hline
+    $L=100$, $lr=0.01$,  $it=7$, $w=5$, $k=10$, $occ_min=5$  & 51.1  & 5.07  \\ 
+    \hline
+    $L=100$, $lr=0.01$,  $it=7$, $w=8$, $k=10$, $occ_min=5$  & 51.1  &  2.72  \\ 
+    \hline
+    \end{tabularx}
+
+Nous savons que tirer des mots de manière aléatoire dans un vocabulaire conduit à une sur-représentation des mots rare ce qui peut avoir 
+un impact sur la performence de notre modèle. Pour résoudre cela nous utilisons cette fois une distribution basée sur la fréquence d'apparition des 
+mots dans notre ensemble d'entraînement. 
+
+\begin{tabularx}{\textwidth}{|X|X|X|}
+    \hline
+    Paramètres & Moyennes & Ecarts types \\ 
+    \hline
+    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=10$, $occ_min=5$  & jhdsgf  & dhsfk  \\ 
+    \hline
+    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=4$, $occ_min=5$  & jsdkhfjk  & jbdsf  \\ 
+    \hline
+    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=10$, $occ_min=5$  & Valeur B  & Valeur C  \\ 
+    \hline
+    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=10$, $occ_min=5$  & Valeur B  & Valeur C  \\ 
+    \hline
+    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=10$, $occ_min=5$  & Valeur B  & Valeur C  \\ 
+    \hline
+    \end{tabularx}
+Néanmoins un tel modèle conduit à une sous-représentation des mots rares, 
 
 \section{Second Modèle}
 

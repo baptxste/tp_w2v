@@ -13,3 +13,5 @@ utiliser pickle et gzip pour avoir un equivalent des json en binaire
 
 
 utiliser la méthode de xavier ou gloriot pour l'initialisation des matrices
+
+dans les tirages aléatoires des mots on a fait random et selon la fréquence des mots mais il faut tester avec une pondération de la probabilité unigramme

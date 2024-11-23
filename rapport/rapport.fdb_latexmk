@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1731517947 "/home/baptiste/Documents/cours/ML1/rapport/rapport.tex" "rapport.pdf" "rapport" 1731517947 0
+["pdflatex"] 1732396858 "/home/baptiste/Documents/cours/ML1/rapport/rapport.tex" "rapport.pdf" "rapport" 1732396859 0
   "/etc/texmf/web2c/texmf.cnf" 1731516891 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/baptiste/Documents/cours/ML1/rapport/rapport.tex" 1731517946 4561 0b5ffa65418285d1af46f414b63d9dd8 ""
+  "/home/baptiste/Documents/cours/ML1/rapport/rapport.tex" 1732396858 5955 bacc94f513d9eef6fabfa0bfb2a7a5c4 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -63,15 +63,17 @@
   "/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg" 1279039959 678 4792914a8f45be57bb98413425e4c7af ""
   "/usr/share/texlive/texmf-dist/tex/latex/mathtools/mathtools.sty" 1656621545 62269 5c1837a5bc5db4c0d255eedc225ca44b ""
   "/usr/share/texlive/texmf-dist/tex/latex/mathtools/mhsetup.sty" 1616101747 5582 a43dedf8e5ec418356f1e9dfe5d29fc3 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty" 1667332637 12691 5b542990fe866f3d772f71346cf85b95 ""
   "/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty" 1654720880 10214 de3e21cfc0eccc98ca7f8dac0ef263d2 ""
   "/usr/share/texlive/texmf-dist/tex/latex/tools/enumerate.sty" 1654720880 3468 46ba9177f0f0a79fe79845d3eebff113 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty" 1654720880 7147 be6981d9f5d866a5634048c4a11814a9 ""
   "/usr/share/texlive/texmf-dist/tex/latex/url/url.sty" 1388531844 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1681034085 39561 34c98e380bf7c7201ee6a7909aff625a ""
   "/usr/share/texmf/web2c/texmf.cnf" 1681034085 39561 34c98e380bf7c7201ee6a7909aff625a ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1731516903 125915 807ff72f6023b33a59c427bfd156a3d1 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1731516938 6475483 7b2bd77f727cc461f30299dd178a5c4b ""
-  "rapport.aux" 1731517947 1110 2ec0fdf2755255c96310afae28ba372d "pdflatex"
-  "rapport.tex" 1731517946 4561 0b5ffa65418285d1af46f414b63d9dd8 ""
+  "rapport.aux" 1732396859 1110 96f969c8dc5b9306726912d072081049 "pdflatex"
+  "rapport.tex" 1732396858 5955 bacc94f513d9eef6fabfa0bfb2a7a5c4 ""
   (generated)
   "rapport.aux"
   "rapport.log"
