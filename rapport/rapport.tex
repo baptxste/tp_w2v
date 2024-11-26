@@ -6,6 +6,7 @@
 \usepackage{mathtools}
 \usepackage{enumerate} 
 \usepackage{tabularx} 
+\usepackage{cite}
 
 \setlength{\parindent}{0in}
 \setlength{\oddsidemargin}{0in}
@@ -26,10 +27,17 @@
 
 
 \section{Introducion}
+Ce projet s’appuie sur le travail fondateur de Mikolov \textit{et al.} \cite{mikolov2013efficient},
+qui ont développé l’algorithme Word2Vec, permettant de générer des représentations vectorielles denses des mots à partir de corpus textuels. 
+Cet algorithme repose sur des architectures telles que Skip-gram et CBOW (Continuous Bag of Words), 
+qui ont révolutionné le domaine du traitement du langage naturel (NLP) en offrant des moyens efficaces de capturer des relations sémantiques et contextuelles entre les mots.
+Le but de ce projet est d’approfondir l’étude des modèles de plongements statistiques appliqués à des problèmes variés de traitement du langage. 
+Nous concentrerons nos efforts sur l’architecture Skip-gram, qui apprend à prédire les mots du contexte à partir d’un mot cible. 
+Dans le cadre de ce projet, nous mettrons en œuvre plusieurs méthodes d’évaluation pour analyser et comparer la qualité des plongements générés. Ces évaluations incluront :
 
-Le but de ce projet est d'étudier différents modèles de plongements statistiques 
-sur des problèmes de traitement du langage. Nous nous pencherons sur une architecture
-bag of words (BOW) et mettrons en place différentes méthodes d'évaluations de nos modèles.
+Des tests de similarité lexicale, pour vérifier si les mots proches en sens sont correctement représentés par des vecteurs similaires.
+Des tests analogiques, afin d'explorer si les relations entre mots (exemple : roi - homme + femme $ \approx $ reine) sont bien capturées.
+
 
 \section{Modèle Initial}
 \subsection{Description du modèle}
@@ -96,25 +104,22 @@ sont tirés de manière totalement alèatoire.
     \end{tabularx}
 
 Nous savons que tirer des mots de manière aléatoire dans un vocabulaire conduit à une sur-représentation des mots rare ce qui peut avoir 
-un impact sur la performence de notre modèle. Pour résoudre cela nous utilisons cette fois une distribution basée sur la fréquence d'apparition des 
+un impact sur la performence de notre modèle. Afin de résoudre cela nous utilisons cette fois une distribution basée sur la fréquence d'apparition des 
 mots dans notre ensemble d'entraînement. 
+En repétant les expériences précédentes avec ce nouveau tirage nous n'obtenons pas de changements significatifs dans les performances de notre modèle. En effet 
+un tel tirage conduit cette fois-ci à une sous représentation des mots rares. On respecte bien la fréquence des mots dans le texte d'entraînement néanmoins les mots fréquents 
+tels que "le", "des" ... n'apportent que peu d'information dans le calcul de nos contextes, en effet ce sont les mots plus rares et donc plus spécifiques qui portent l'information
+sémantique. 
 
-\begin{tabularx}{\textwidth}{|X|X|X|}
-    \hline
-    Paramètres & Moyennes & Ecarts types \\ 
-    \hline
-    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=10$, $occ_min=5$  & jhdsgf  & dhsfk  \\ 
-    \hline
-    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=4$, $occ_min=5$  & jsdkhfjk  & jbdsf  \\ 
-    \hline
-    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=10$, $occ_min=5$  & Valeur B  & Valeur C  \\ 
-    \hline
-    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=10$, $occ_min=5$  & Valeur B  & Valeur C  \\ 
-    \hline
-    $L=100$, $lr=0.01$,  $it=7$, $w=2$, $k=10$, $occ_min=5$  & Valeur B  & Valeur C  \\ 
-    \hline
-    \end{tabularx}
-Néanmoins un tel modèle conduit à une sous-représentation des mots rares, 
+Afin d'améliorer nos performances nous testons la solutions proposée par  Mikolov \textit{et al.} \cite{mikolov2013distributed}:
+Il s'agit encore une fois d'une méthode d'échantillonage mais cette fois ci chaque mot $w_i$ dans l'ensemble d'entraînement est 
+se voit attribué  une probabilité calculée par la formule suivante:
+
+\[
+P(w_i) = 1 - \sqrt{\frac{t}{f(w_i)}}
+\]
+
+où $t$ est un seuil ( d'environ $10^{-5}$ dans l'article) et $f(w_i)$ est la fréquence du mot $w_i$.
 
 \section{Second Modèle}
 
@@ -134,5 +139,9 @@ plus de 2,5 millions de mots et des plogements de dimension 100.
 
 
 \section{Conclusion}
+
+
+\bibliographystyle{plain} % Style de la bibliographie (exemple : plain, alpha, IEEE, etc.)
+\bibliography{references.bib} % Nom du fichier .bib sans l'extension
 
 \end{document}
