@@ -1,0 +1,15 @@
+\begin{thebibliography}{1}
+
+\bibitem{mikolov2013efficient}
+Tomas Mikolov, Greg Corrado, Kai Chen, and Jeffrey Dean.
+\newblock Efficient estimation of word representations in vector space.
+\newblock In {\em None}, 2013.
+
+\bibitem{mikolov2013distributed}
+Tomas Mikolov, Ilya Sutskever, Kai Chen, Greg Corrado, and Jeffrey Dean.
+\newblock Distributed representations of words and phrases and their
+  compositionality.
+\newblock In {\em Advances in Neural Information Processing Systems},
+  volume~26, pages 3111--3119. Curran Associates, Inc., 2013.
+
+\end{thebibliography}

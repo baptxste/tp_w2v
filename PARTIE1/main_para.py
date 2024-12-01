@@ -4,50 +4,61 @@ from eval import test_file
 import numpy as np
 import json
 from itertools import product
-from concurrent.futures import ProcessPoolExecutor
 
-# Définir les combinaisons de paramètres
-L_vals = [100]
-lr_vals = [0.1]
-it_vals = [5, 7, 10, 20]
-w_vals = [1, 2, 3, 5, 7]
-k_vals = [1, 3, 5, 10]
-occ_min_vals = [1, 5, 10]
-listpath = ["../tlnl_tp1_data/alexandre_dumas/Le_comte_de_Monte_Cristo.txt"]
-
-# Générer toutes les combinaisons de paramètres
-param_combinations = list(product(k_vals, w_vals, it_vals, lr_vals, L_vals, occ_min_vals))
-
-def run_experiment(exp, k, w, it, lr, L, occ_min):
-    # Préparer les informations de l'expérience
-    info = {'experience': exp, 'k': k, 'w': w, 'it': it, 'lr': lr, 'L': L, 'occ_min': occ_min}
+def run_experiment(L, lr, it, w, k, occ_min, listpath):
+    # Charger les données uniquement si w ou k change
+    key = (w, k)
+    if key not in cached_data:
+        cached_data[key] = dataloader.Dataloader(listpath, w, k, from_files=False, nb_occ=occ_min)
+    data = cached_data[key]
     
-    # Charger les données
-    data = dataloader.Dataloader(listpath, w, k, from_files=False, nb_occ=occ_min)
-
-    # Entraîner le modèle
-    embed = embedding.Embedding(len(data.indexer), L)
-    embed.generate(data.dataset, lr, it)
-    info['loss'] = embed.losses
-    embed.save_param(data.indexer)
-    
-    # Évaluer le modèle
-    M = np.load('data/matriceM.npy')
-    result = test_file('../plongement_statiques/Le_comte_de_Monte_Cristo.100.sim', embed.M, data.indexer)
-    info['resultat (%)'] = result
-
-    # Sauvegarder les résultats dans un fichier distinct pour chaque expérience
-    with open(f'results/result_{exp}.txt', 'w') as file_result:
-        json.dump(info, file_result, indent=4)
+    results = []
+    for exp in range(10):
+        embed = embedding.Embedding(len(data.indexer), L)
+        embed.generate(data.dataset, lr, it)
+        result = test_file('../plongement_statiques/Le_comte_de_Monte_Cristo.100.sim', embed.M, data.indexer)
+        results.append(result)
+    return results
 
 if __name__ == '__main__':
-    # Exécuter les expériences en parallèle avec 28 CPU
-    with ProcessPoolExecutor(max_workers=28) as executor:
-        # Soumettre chaque expérience avec des paramètres uniques
-        futures = [
-            executor.submit(run_experiment, exp, k, w, it, lr, L, occ_min)
-            for exp, (k, w, it, lr, L, occ_min) in enumerate(param_combinations, 1)
-        ]
-        # Attendre la fin de toutes les expériences
-        for future in futures:
-            future.result()  # Assure que les erreurs éventuelles sont capturées
+    # Hyperparamètres à tester
+    L_values = [100]  # tailles possibles des embeddings
+    lr_values = [0.001]  # différents taux d'apprentissage
+    it_values = [5, 10, 20]  # différents nombres d'itérations
+    w_values = [2, 5]  # tailles de la demi-fenêtre
+    k_values = [10]  # nombre de cneg pour 1 cpos
+    occ_min = 2  # occurrence minimale
+    listpath = ["../tlnl_tp1_data/alexandre_dumas/Le_comte_de_Monte_Cristo.txt"]
+
+    # Dictionnaire pour éviter les rechargements inutiles
+    cached_data = {}
+
+    # Résultats finaux
+    all_results = []
+
+    # Générer toutes les combinaisons possibles de paramètres
+    parameter_combinations = product(L_values, lr_values, it_values, w_values, k_values)
+
+    for i, params in enumerate(parameter_combinations):
+        L, lr, it, w, k = params
+        print(f"\nTest numéro : {i+1}/{len(list(parameter_combinations))} avec L={L}, lr={lr}, it={it}, w={w}, k={k}")
+        
+        # Exécuter les expériences
+        results = run_experiment(L, lr, it, w, k, occ_min, listpath)
+
+        # Calcul des statistiques
+        mean_result = np.mean(results)
+        std_result = np.std(results)
+        result_entry = {
+            "parameters": {"L": L, "lr": lr, "it": it, "w": w, "k": k},
+            "raw_results": results,
+            "mean": mean_result,
+            "std": std_result,
+        }
+        all_results.append(result_entry)
+    
+    # Sauvegarder les résultats dans un fichier JSON
+    with open("experiment_results.json", "w") as outfile:
+        json.dump(all_results, outfile, indent=4)
+
+    print("Résultats sauvegardés dans 'experiment_results.json'.")

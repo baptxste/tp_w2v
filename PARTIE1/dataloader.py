@@ -3,6 +3,8 @@ from collections import Counter, defaultdict
 import json
 from tqdm import tqdm
 import random
+import math
+import numpy as np
 
 class Dataloader:
     
@@ -19,6 +21,7 @@ class Dataloader:
             self.extract_clean_text()
             print("Création du vocabulaire ...")
             self.create_lexicon(nb_occ)
+            print(len(self.minlexicon))
             print("Génération des exemples positifs et négatifs ...")
             self.cpos_cneg()
             print("Création du dataset ...")
@@ -47,29 +50,25 @@ class Dataloader:
         self.indexer = sorted(self.minlexicon.keys())
         self.text = ' '.join([word for word in self.text.split() if word in self.indexer])
     
-    # def tirer_mot_aleatoire(self):
-    #     """
-    #     tirage random
-    #     """
-    #     if not hasattr(self, 'minlexicon_keys'):
-    #         self.minlexicon_keys = list(self.minlexicon.keys())
-    #     return random.choice(self.minlexicon_keys)
-    
-
     def tirer_mot_aleatoire(self):
         """
-        tirage selon la fréquence
+        tirage random
         """
         if not hasattr(self, 'minlexicon_keys'):
             self.minlexicon_keys = list(self.minlexicon.keys())
-        if not hasattr(self, 'minlexicon_weights'):
+        return random.choice(self.minlexicon_keys)
+    
 
-            self.minlexicon_keys = list(self.minlexicon.keys())
-            total_count = sum(self.minlexicon.values())
-            self.minlexicon_weights = [self.minlexicon[word] / total_count for word in self.minlexicon_keys]
-        
-
-        return random.choices(self.minlexicon_keys, weights=self.minlexicon_weights, k=1)[0]
+    # def tirer_mot_aleatoire(self):
+    #     """
+    #     tirage selon la fréquence
+    #     """
+    #     if not hasattr(self, 'minlexicon_keys'):
+    #         self.minlexicon_keys = list(self.minlexicon.keys())
+    #     if not hasattr(self, 'minlexicon_weights'):
+    #         total_count = sum(self.minlexicon.values())
+    #         self.minlexicon_weights = [self.minlexicon[word] / total_count for word in self.minlexicon_keys]
+    #     return random.choices(self.minlexicon_keys, weights=self.minlexicon_weights, k=1)[0]
     
     # def tirer_mot_aleatoire(self):
     #     """
@@ -86,7 +85,34 @@ class Dataloader:
 
     #     return random.choices(self.minlexicon_keys, weights=self.minlexicon_weights, k=1)[0]
 
+    # def tirer_mot_aleatoire(self, t=10**(-5)):
+    #     """
+    #     Tirage selon la fréquence avec régularisation Mikolov
+    #     P(w_i) = 1 - sqrt(t / f(w_i))
+    #     """
+    #     if not hasattr(self, 'minlexicon_keys'):
+    #         self.minlexicon_keys = np.array(list(self.minlexicon.keys()))
+    #         self.minlexicon_values = np.array(list(self.minlexicon.values()), dtype=np.float64)
 
+        #     # Calcul des fréquences normalisées
+        #     total_count = self.minlexicon_values.sum()
+        #     self.normalized_frequencies = self.minlexicon_values / total_count
+
+        #     # Calcul des probabilités Mikolov
+        #     sqrt_t = math.sqrt(t)
+        #     self.minlexicon_weights = np.maximum(
+        #         0, 1 - sqrt_t / np.sqrt(self.normalized_frequencies)
+        #     )
+
+        #     # Normalisation pour obtenir une distribution valide
+        #     total_weight = self.minlexicon_weights.sum()
+        #     if total_weight > 0:
+        #         self.minlexicon_weights /= total_weight
+        #     else:
+        #         raise ValueError("La somme des poids est nulle. Vérifiez les fréquences et le seuil t.")
+
+        # # Tirage selon les poids ajustés
+        # return np.random.choice(self.minlexicon_keys, p=self.minlexicon_weights)
 
     def cpos_cneg(self):
         self.cpos = defaultdict(list)
